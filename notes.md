@@ -207,7 +207,7 @@
 - $I_{L}$ = Intensity of light source
 - $R$ = Reflectance (color)
 - $N$ = Surface normal vector
-- $\cdot$ = vector to light source
+- $\cdot L$ = vector to light source
 - ### goal of vision
   - recover surface color & normal from reflected light
 
@@ -230,7 +230,7 @@
 - HSL/HSV (hue, saturation, lightness/value)
   - attempt to match human understanding of color
 - CIE 1931 XYZ
-  - basedo n human cone sensitivity
+  - based on human cone sensitivity
 - LAB (luminance, a*=red/green, b*=blue/yellow)
   - approx. perceptually uniform space
 - color transform
@@ -269,10 +269,10 @@
 ## Cause of edges
 
 - caused by:
-  - surface normal discotinuity (diff orientation)
-  - depth discotinuity
-  - surface color discotinuity
-  - illumination discotinuity (shadow)
+  - surface normal discontinuity (diff orientation)
+  - depth discontinuity
+  - surface color discontinuity
+  - illumination discontinuity (shadow)
 
 ## Gradient
 
@@ -285,11 +285,11 @@
 
 - derivative of a row/col of image can be noisy
 - solution 1: smooth (blur) image first (convolve with a gaussian blur) before derivative
-- solution 2: filter image with derivativ applied to gaussian filter (easier to compute)
+- solution 2: filter image with derivative applied to gaussian filter (easier to compute)
 
 ## Canny edge detection
 
-- detect edges based on image gradient, + additional processing to improve edge map
+- detect edges based on image gradient, + add. processing to improve edge map
 - steps:
 
   - filter with derivative of gaussian filters
@@ -335,14 +335,14 @@
 
 ## Edges invariant to light intensity?
 
-- image derivative is invariant to intensity shift
-- tolerant to contrast change, but depends on threshold
+- image derivative is **invariant** to intensity shift
+- **tolerant** to contrast change, but depends on threshold
 
-- edges tolerant to light direction
-- edges invariant to translation
-- edges not invariant to rotation
-- edges not invariant to scale
-- edges somewhat tolerant to 3d rotation/pose
+- edges **tolerant** to light direction
+- edges **invariant** to translation
+- edges **not invariant** to rotation
+- edges **not invariant** to scale
+- edges **somewhat tolerant** to 3d rotation/pose
 
 ## Image recognition
 
@@ -365,7 +365,7 @@
   - inter-category similarity
   - intra-category variability
     - diff instances, illumination, scale, viewpoint/posse, background/occlusion
-- ### Goal
+- ### Goal of image recognition
   - build representation of image that:
     - distinguish diff categories
     - invariant/tolerant to variation within category
@@ -394,14 +394,14 @@
 - compute gradiant of loss function w.r.t network parameters, starting with output layer & propagation to earlier layers, adjusting weights to reduce loss
 - learning rate is a free parameter
 - loss function based on diff in ground truth & prediction
-- ### adv
+- **adv:**
   - universal approximator
     - able to approx. any continuous function on $R^{n}$
   - feature embedding
     - learn complex features
   - parallelisable
     - within each layer, neurons are independent
-- ### disadv
+- **disadv:**
   - large number of parameters
   - high memory/time/data requirements
   - prone to overfitting
@@ -416,7 +416,7 @@
 
 - why convolution instead of just regular neural networks?
   - more efficient learning of local, repeated patterns
-  - disadv: limits what the network can learn
+  - **disadv:** limits what the network can learn
 
 ## Convolutional layer
 
@@ -432,24 +432,24 @@
   - each neuron connected to every neuron in input
   - neuron learns some combination of input
   - output to next layer is neuron's response
-- colvolutional:
+- convolutional:
   - each neuron connected to small patch of input
   - neuron learns a convolutional kernel on input
   - output to next layer is input convolved with neuron's kernel
 
 ## Convolution output size
 
-- valid convolution (kernel > 1x1) results in output smaller than input
+- valid convolution (kernel > size 1x1) results in output smaller than input
 - pad input if same-size output is needed
 
 ## Convolution layers
 
-- adv:
+- **adv:**
   - efficient
     - learn to recognize same features anywhere from image, with fewer parameters compared to fully connected layer
   - preserve spatial relations
     - output is image with values indicating where features are present
-- disadv:
+- **disadv:**
   - limited kernel size means model is limited to learning local features
 
 ## Downsampling in CNNs
@@ -467,9 +467,9 @@
     - output_size = ceil ((input_size - kernel_size + 1) / stride)
   - with padding:
     - output_size = ceil(input_size/stride)
-  - adv:
+  - **adv:**
     - efficient: higher stride, fewer convolution operations
-  - disadv:
+  - **disadv:**
     - kernel window skips over parts of image, important image features could be missed
 
 - ### Max pooling
@@ -483,9 +483,9 @@
 
   - within a given window in the activation map, average the values
 
-- adv:
+- **adv:**
   - max pooling likely to preserve most important features, compared to strided convolution / average pooling
-- disadv:
+- **disadv:**
   - average pooling 'blurs' over features, imprtant features may be lost
   - pooling slower than strided convolution
 
@@ -496,7 +496,7 @@
 
   - ### L1 / L2 regularisation
 
-    - add an additional term to loss function to encourage smaller values for network parameters
+    - add an add. term to loss function to encourage smaller values for network parameters
     - L1 add $\sum{i}|\theta{i}|$
       - penalise sum of abs value of all parameters
     - encourage sparse representations - many parameters should be 0
@@ -780,7 +780,7 @@
 
     - add global average pooling (GAP) layer before classification layer
     - use weights of this layer to determine where the class-relevant features are
-    - disadv:
+    - **disadv:**
       - GAP layer must be added to pretrained network and then finetuned
       - Only allows visualisation of the last layer
 
@@ -1019,10 +1019,10 @@
 - larger window
   - smoother depth, lack detail
 
-## additional constraint
+## add. constraint
 
 - individual matches are often ambiguous
-- set of matches should obey additional constraints:
+- set of matches should obey add. constraints:
   - uniqueness
     - point in 1 view has no more than 1 match in other view
   - ordering
@@ -1052,9 +1052,9 @@
       - a loss based on log(depth) may work better than abs. depth
     - mean depth of scenes can vary widely
     - to discourage models from simply learning mean depth, scale the loss function so it is similar for diff scenes
-- adv:
+- **adv:**
   - dont require multiple views / steroe camera
-- disadv:
+- **disadv:**
   - 'blurry' depth at object edges (can be combined with edge maps for better result)
   - models may not generalise well to new contexts
 - 2d image provide multiple cues for 3d depth
@@ -1063,7 +1063,7 @@
 ## Depth from disparity
 
 - instead of training on annotated deph maps, train on stereo image pairs
-- adv:
+- **adv:**
   - stereo image pairs can be produced with standard cameras, whiledepth maps require special equipment like LiDAR
 - step:
   - input: 1 image from a stero pair (ex: left)
@@ -1112,11 +1112,11 @@
   - allows for accurate mapping between image coords & word coords
 - ### alternative methods
   - calibration using planar surfaces in the world
-    - adv: no need for special calibration target
-    - disadv: more diff to detect/track keypoints, may introduce errors
+    - **adv:** no need for special calibration target
+    - **disadv:** more diff to detect/track keypoints, may introduce errors
   - look up camera parameters from manufacturer specs
-    - adv: no computation
-    - disadv: only for cameras with fixed focal length
+    - **adv:** no computation
+    - **disadv:** only for cameras with fixed focal length
 
 ## Homogeneuos coordinates
 
@@ -1214,11 +1214,11 @@
 - texture represented as correlations between feature map at a layer of neural network
 
 - non parametric texture synthesis based on copying texture patches
-  - adv: work well on periodic textures
-  - disadv: no model of texture parameters
+  - **adv:** work well on periodic textures
+  - **disadv:** no model of texture parameters
 - parametrix texture synthesis represents textures in terms of set of parameters
-  - adv: most methods work better on stochastic textures
-  - disadv: even very complex model may be incomplete
+  - **adv:** most methods work better on stochastic textures
+  - **disadv:** even very complex model may be incomplete
 
 ## Texture transfer
 
@@ -1270,7 +1270,7 @@
     - parametric model that fits itself to object boundary
     - "shrink wraps" around object to capture shape
     - ##### algorithm
-      - initialize countour outsdie object boundary
+      - initialize contour outside object boundary
       - on each step, allow each point on the contour to shift 1 pixel in any direction
         - shift to minimise a loss function
         - $$E_{total}=\alpha E_{elasticity} + \beta E_{stiffness} + E_{edge}$$
@@ -1388,10 +1388,10 @@
   - probabilistic decoder learns $P(x|z)$
   - probabilistic decoder learns $P(z|x)$
   - goal: maximize likelihood $P(x)$
-  - adv:
+  - **adv:**
     - learn approx of $P(z|x)$ and $P(x|z)$, where z is latent variable representation of input x
     - can be used to generate new instances of x
-  - disadv:
+  - **disadv:**
     - outputs often blurry
   - #### Probabilistic decoder
     - input: latent variables $z$
@@ -1432,9 +1432,9 @@
   - generator
   - discriminator
 - training involves competition between the 2 networks
-- adv:
+- **adv:**
   - generate samples from complex prob. dist. wihtout actually representing the dist.
-- disadv:
+- **disadv:**
   - can be unstable / hard to train
   - diff to evaluate
   - even models that dont show complete mode collapse tend to have lower-than-desired diversity
@@ -1480,10 +1480,10 @@
   - #### inception score
     - within a class, all images should be confidently classified with the correct label
     - across classes, GAN should produce a wide variety of confidently-classified images
-    - adv:
+    - **adv:**
       - automatic, efficient
       - neural network responses correlate with human judgements of image quality
-    - disadv:
+    - **disadv:**
       - dont require high diversity within categories
       - sensitive to noise, adversarial images
 - ### diversity
@@ -1499,7 +1499,7 @@
 ## Conditional GANs
 
 - conditional model: learn P(X|Y) rather than P(X)
-- both discriminator & generator take y as additional input
+- both discriminator & generator take y as add. input
 - CycleGAN
   - train a pair of generator to map x->y and y->x
 
@@ -1575,7 +1575,7 @@
     - object detection / localisation
     - video tracking
 - compact, intermediate representation used as first step for:
-  - segmentation (especially graph based methods)
+  - segmentation (especially graph-based methods)
   - object detection / localization
   - video tracking
 
@@ -1684,12 +1684,12 @@
     - take patches extracted by R-CNN & run them through fully convol network
     - FCN predicts a binary segmentation mask ('object' or 'background')
 - segmentation can be approached in diff ways
-  - clustering / graph based methods
+  - clustering / graph-based methods
   - pixel classification with FCNs
-- adv of FCNs
+- **adv** of FCNs
   - better able to handle complex objects/backgrounds
   - likely to get better results for classes on which they are trained
-- disadv of FCNs
+- **disadv** of FCNs
   - worse at capturing precise boundary details
   - may not generalsie to classes outside training set
 
@@ -1745,9 +1745,9 @@
   - compute region proposals (selective search)
   - each region: run through CNN to predict class labels & bounding box transforms
   - 'detections'= regions with highest class confidence scores
-- ### advantage
+- **adv:**
   - much more efficient than classifying every window
-- ### disadvantage
+- **disadv:**
   - still requires classifying many windows (ex: 2000)
   - region proposal step could miss some objects
 
@@ -1763,10 +1763,10 @@
     - efficency: N is small, R is large
     - sample regions so 75% of training set is 'background'
   - train with multi-task loss
-- ### advantage
+- adv
   - faster than R-CNN (9x faster training, 140x faster testing)
   - slightly more accurate than R-CNN
-- ### disadvantage
+- disadv
   - ROIs arent learned
   - region proposal step could miss some objects
 
@@ -1801,14 +1801,14 @@
 - ### YOLO v1
   - main idea: instead of going through multiple steps (region proposals, region classification), predict a heatmap for each class directly in a CNN
   - output is a set of N class prob. maps + M bounding box parameter maps
-  - loss is sum-squared error between true & predicted maps, with some wieghtings:
+  - loss is sum-squared error between true & predicted maps, with some weightings:
     - bbox location parameters get higher weight in loss
     - grid cells that dont contain objects dont contribute to classification loss
     - bbox parameters penalised based on confidence, encourage M bboxes to specialise for diff. objects
-  - #### advantages
+  - **adv:**
     - fast
     - accurate, for real time object detector
-  - #### disadvantages
+  - **disadv:**
     - limited spatial precision
     - less accurate than slower detectors
 - ### SSD: single shot multibox detector
@@ -1830,7 +1830,7 @@
 - ### Mask R-CNN
   - extra step on Faster R-CNN
     - each patch runs thruogh a fully-convol network that predicts a binary segmentation mask
-  - patch loss becomes L=Lcls + Lbox + Lmask
+  - patch loss becomes $L=L_{cls} + L_{box} + L_{mask}$
 - can be modelled as obj detection followed by binary segmentation
 
 ## Object detection result
